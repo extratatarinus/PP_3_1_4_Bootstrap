@@ -1,8 +1,8 @@
 package ru.kata.spring.boot_security.repositories;
 
-import ru.kata.spring.boot_security.entities.User;
-import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import ru.kata.spring.boot_security.entities.User;
 
 import java.util.Optional;
 

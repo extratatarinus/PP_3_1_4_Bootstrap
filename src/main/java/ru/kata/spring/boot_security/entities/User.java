@@ -5,7 +5,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.Column;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -22,6 +32,7 @@ public class User implements UserDetails {
 
     private int age;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
@@ -47,6 +58,7 @@ public class User implements UserDetails {
         this.password = password;
         this.roles = roles;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -58,8 +70,8 @@ public class User implements UserDetails {
         return (roles == null)
                 ? ""
                 : roles.stream()
-                       .map(role -> role.getName().substring(5))
-                       .collect(Collectors.joining(", "));
+                .map(role -> role.getName().substring(5))
+                .collect(Collectors.joining(", "));
     }
 
     @Override

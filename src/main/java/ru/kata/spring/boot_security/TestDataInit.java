@@ -1,9 +1,7 @@
 package ru.kata.spring.boot_security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.kata.spring.boot_security.configs.BCryptCoder;
 import ru.kata.spring.boot_security.entities.Role;
 import ru.kata.spring.boot_security.entities.User;
 import ru.kata.spring.boot_security.services.RoleService;
