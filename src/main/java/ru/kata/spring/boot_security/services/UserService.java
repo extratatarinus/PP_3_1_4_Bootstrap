@@ -1,5 +1,8 @@
 package ru.kata.spring.boot_security.services;
 
+import org.hibernate.Hibernate;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements UserServiceInt {
+public class UserService implements UserServiceInt, UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -21,7 +24,6 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    @Transactional
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -50,4 +52,15 @@ public class UserService implements UserServiceInt {
     }
 
 
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new UsernameNotFoundException("User not Found!!!");
+        }
+        User user = optionalUser.get();
+        Hibernate.initialize(user.getRoles());
+        return user;
+    }
 }

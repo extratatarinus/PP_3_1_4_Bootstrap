@@ -7,16 +7,16 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import ru.kata.spring.boot_security.services.MyUserDetailsService;
+import ru.kata.spring.boot_security.services.UserService;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final MyUserDetailsService myUserDetailsService;
+    private final UserService myUserDetailsService;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, MyUserDetailsService myUserDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService myUserDetailsService) {
         this.successUserHandler = successUserHandler;
         this.myUserDetailsService = myUserDetailsService;
     }

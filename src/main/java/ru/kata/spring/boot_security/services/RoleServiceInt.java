@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface RoleServiceInt {
 
-    public void save(Role role);
+    void save(Role role);
 
-    public List<Role> findAll();
+    List<Role> findAll();
 
 }

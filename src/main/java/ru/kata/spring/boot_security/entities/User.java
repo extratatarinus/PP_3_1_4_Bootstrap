@@ -17,6 +17,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Column;
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -37,20 +38,20 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Collection<Role> roles;
+    private Set<Role> roles;
 
     public User() {
 
     }
 
     public User(String name, String lastName, int age,
-                String email, String password, Collection<Role> roles) {
+                String email, String password, Set<Role> roles) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
@@ -153,7 +154,7 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

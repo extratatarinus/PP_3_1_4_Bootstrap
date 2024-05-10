@@ -18,6 +18,8 @@ import java.util.Optional;
 public class MainController {
     private final UserService userService;
     private final RoleService roleService;
+    private Principal myAuthUser;
+
 
     @Autowired
     public MainController(UserService userService, RoleService roleService) {
@@ -26,8 +28,8 @@ public class MainController {
     }
 
     @GetMapping
-    public String showAllUsers(Model model, Principal principal) {
-        Optional<User> optionalUser = userService.findByEmail(principal.getName());
+    public String showAllUsers(Model model) {
+        Optional<User> optionalUser = userService.findByEmail(myAuthUser.getName());
         User authUser = optionalUser.orElse(null);
         model.addAttribute("allUsers", userService.getAllUsers());
         model.addAttribute("allRoles", roleService.findAll());
@@ -37,8 +39,8 @@ public class MainController {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user, Principal principal) {
-        Optional<User> authUserOptional = userService.findByEmail(principal.getName());
+    public String saveUser(@ModelAttribute User user) {
+        Optional<User> authUserOptional = userService.findByEmail(myAuthUser.getName());
         userService.saveUser(user);
         return authUserOptional.map(authUser -> {
             if (authUser.getId().equals(user.getId()) && !user.getRolesNames().contains("ADMIN")) {
@@ -50,8 +52,8 @@ public class MainController {
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam Long id, Principal principal) {
-        Optional<User> authUserOptional = userService.findByEmail(principal.getName());
+    public String deleteUser(@RequestParam Long id) {
+        Optional<User> authUserOptional = userService.findByEmail(myAuthUser.getName());
         userService.deleteUser(id);
         return authUserOptional.map(authUser -> {
             if (authUser.getId().equals(id)) {
@@ -61,5 +63,9 @@ public class MainController {
                 return "redirect:/";
             }
         }).orElse("redirect:/");
+    }
+
+    public String Principal (Principal principal) {
+        return principal.getName();
     }
 }
